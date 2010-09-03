@@ -33,6 +33,18 @@
 (string-equal system-type "gnu/linux")
 )
 
+(defun system-is-my-mac ()
+  (interactive)
+  "Return true if the system we are running on is my PC at work"
+  (string-equal system-name "Keith-Ledfords-MBP.local")
+)
+
+(defun system-is-my-work-desktop ()
+  (interactive)
+  "Return true if the system we are running on is my PC at work"
+  (string-equal system-name "atl-kledford-desktop")
+)
+
 ;; ;; disable closing emacs in Mac OS X
 ;; (if (system-type-is-darwin)
 ;; (global-unset-key "\C-z")
@@ -50,9 +62,104 @@
 
 ;; END Taken from http://sigquit.wordpress.com/2008/09/28/single-dot-emacs-file/
 
+(if (string-equal system-name "Keith-Ledfords-MBP.local")
+    (message "SYSTEM NAME MATCH")
+)
+
+;; System Specific Settings
+(if  (system-type-is-darwin)
+    (message "SETTING DARWIN SPECIFIC SETTINGS")
+    (defun copy-from-osx ()
+      (shell-command-to-string "pbpaste"))
+
+  (defun paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+
+  (setq interprogram-cut-function 'paste-to-osx)
+  (setq interprogram-paste-function 'copy-from-osx)
+)
+
+
+(if (system-is-my-work-desktop)
+    (message "SETTING EMAIL ADDRESSES FOR MY WORK DESKTOP")
+    (setq user-mail-address "keith.ledford@ericsson.com")
+  (setq html-helper-address-string "<a href=\"mailto:keith.ledford@ericsson.com\">Keith Ledford &lt;keith.ledford@ericsson.com&gt;</a>")
+  (setq  post-email-address "keith.ledford@ericsson.com")
+)
+
+;;(if (system-is-my-mac)
+(if (string-equal system-name "Keith-Ledfords-MBP.local")
+    (setq html-helper-address-string "<a href=\"mailto:keith@ledfords.us\">Keith Ledford &lt;keith@ledfords.us&gt;</a>")
+  (message "SETTING EMAIL ADDRESSES FOR MBP")
+
+  (message "SETTING EMAIL ADDRESSES FOR MBP2")
+  ;; for compatibility with older Aquamacs versions
+;  (defvar aquamacs-140-custom-file-upgraded t)
+  (unless (fboundp 'auto-detect-longlines) (defun auto-detect-longlines () t))
+  (message "SETTING EMAIL ADDRESSES FOR MBP3")
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(all-christian-calendar-holidays t t)
+   '(user-mail-address "keith@ledfords.us")
+;   '(html-helper-address-string "<a href=\"mailto:keith@ledfords.us\">Keith Ledford &lt;keith@ledfords.us&gt;</a>")
+   '(post-email-address "keith@ledfords.us")
+   '(aquamacs-additional-fontsets nil t)
+   '(aquamacs-customization-version-id 208 t)
+   '(aquamacs-tool-bar-user-customization nil t)
+   '(c-comment-prefix-regexp (quote ((java-mode . "") (other . ""))))
+   '(case-fold-search t)
+   '(cperl-close-paren-offset -4)
+   '(cperl-continued-statement-offset 4)
+   '(cperl-indent-level 4)
+   '(cperl-tab-always-indent t)
+   '(current-language-environment "English")
+   '(default-frame-alist (quote ((tool-bar-lines . 1) (menu-bar-lines . 1) (cursor-type . box) (vertical-scroll-bars . right) (internal-border-width . 0) (left-fringe . 1) (right-fringe) (fringe) (background-color . "black") (background-mode . dark) (border-color . "black") (cursor-color . "yellow") (foreground-color . "white") (mouse-color . "sienna1"))))
+   '(develock-auto-enable nil)
+   '(display-time-mode t)
+   '(font-lock-global-modes t)
+   '(font-lock-maximum-size 71680)
+   '(font-lock-mode-hook (quote (ignore)) t)
+   '(hi-lock-mode t t (hi-lock))
+   '(mouse-sel-mode t nil (mouse-sel))
+   '(ns-tool-bar-display-mode (quote both) t)
+   '(ns-tool-bar-size-mode (quote regular) t)
+   '(nxml-auto-insert-xml-declaration-flag t)
+   '(nxml-bind-meta-tab-to-complete-flag t)
+   '(nxml-slash-auto-complete-flag t)
+   '(post-email-address "keith@ledfords.us")
+   '(query-user-mail-address nil)
+   '(show-trailing-whitespace t)
+   '(size-indication-mode t)
+   '(toolbar-menu-show--aquamacs-print t)
+   '(user-mail-address "keith@ledford.us")
+   '(visual-line-mode nil t)
+   '(x-select-enable-clipboard t)
+     )
+  (message "setting email addresses for MBP4")
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+					;'(default ((t (:size "14pt" :family "Charter"))))
+   '(autoface-default ((t (:inherit default :background "#010101" :foreground "#ffffff"))) t)
+   '(ruby-mode-default ((t (:inherit autoface-default :background "#010101" :foreground "#ffffff"))) t)
+   '(trailing-whitespace ((((class color) (background dark)) (:foreground "red" :underline unspecified))))
+   )
+  (message "setting email addresses for MBP5")
+  )
+
+;; END  System Specific Settings
+
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+ ;; Your init file should contain only one such instance.
  '(all-christian-calendar-holidays t t)
  '(c-comment-prefix-regexp (quote ((java-mode . "") (other . ""))))
  '(case-fold-search t)
@@ -66,18 +173,17 @@
  '(font-lock-mode-hook (quote (ignore)))
  '(global-font-lock-mode t nil (font-lock))
  '(hi-lock-mode t nil (hi-lock))
-;; '(mouse-sel-mode t nil (mouse-sel))
  '(nxml-auto-insert-xml-declaration-flag t)
  '(nxml-bind-meta-tab-to-complete-flag t)
  '(nxml-slash-auto-complete-flag t)
- '(post-email-address "keith.ledford@ericsson.com")
+;; '(post-email-address "keith.ledford@ericsson.com")
  '(query-user-mail-address nil)
  '(show-trailing-whitespace t)
  '(transient-mark-mode t)
  '(develock-auto-enable nil)
  '(column-number-mode t)
- '(user-mail-address "keith.ledford@ericsson.com"))
-;(setq lpr-command "xpp")
+;; '(user-mail-address "keith.ledford@ericsson.com"))
+)
 (setq inhibit-splash-screen t) 
 ;; Make all "yes or no" prompts show "y or n" instead
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -86,10 +192,7 @@
   ;; Your init file should contain only one such instance.
  '(default ((t (:size "14pt" :family "Charter"))))
  '(trailing-whitespace ((((class color) (background dark)) (:foreground "red" :underline unspecified)))))
-;;(setq load-path (cons "~/emacs/" load-path))
 (add-to-list 'load-path "~/emacs/")
-;;(require 'psvn)
-;;(require 'tail)
 (require 'color-theme)
 (color-theme-dark-laptop)
 
@@ -108,7 +211,6 @@
 (global-set-key [kp-delete] 'delete-char)
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\M-w" 'kill-region)
-;;(setq column-number-mode 't)
 
 ;;;start gnuserv 20070403
 (server-start)
@@ -120,17 +222,12 @@
 (require 'backups)
 (move-backups t)
 (setq backup-directory "~/.emacs_backups")
-;(setq browse-url-netscape-program "/home/kledford/bin/moz_newtab.sh")
 
 ;; Recent files 
 ;; http://www.emacswiki.org/cgi-bin/wiki/RecentFiles
-;;(require 'recentf)
 (recentf-mode 1)
 
-;;(load "/usr/share/emacs/site-lisp/site-gentoo")
-
 ;; FOR crypt++.el
-;;(require 'crypt++)
 (setq crypt-encryption-type 'gpg
       crypt-encryption-file-extension "\\(\\.gpg\\)$"
       crypt-bind-insert-file nil
@@ -143,12 +240,9 @@
 (modify-coding-system-alist 'file "\\.Z\\'" 'no-conversion)
 ;; END FOR crypt++.el
 
-
 ;; use Unix-style line endings
-;;(setq-default buffer-file-coding-system "unix")
 (setq-default inhibit-eol-conversion t)
 (set-buffer-file-coding-system 'no-conversion)
-;;(set-buffer-file-coding-system 'undecided-unix)
 
 (progn        ; Font-locking faces set-up
   (setq
@@ -157,26 +251,12 @@
  			      (* 70 1024)
 			    (* 150 1024))))
 
-;;(add-to-list 'load-path "~/emacs/tramp.emacs/lisp/")
-;;(add-to-list 'load-path "~/emacs/tramp-2.1.12/lisp/")
-;;(add-to-list 'load-path "~/emacs/tramp2.1.12/share/emacs/site-lisp/")
-;;(require 'tramp)
 (setq tramp-default-method "scp")
-
-;; (add-to-list
-;;  'tramp-multi-connection-function-alist
-;;  '("home" tramp-multi-connect-rlogin "ssh %h -l kledford -p 2222%n")
-;;  '("sshf" tramp-multi-connect-rlogin "ssh %h -l %u -t ssh %n"))
-;; (add-to-list 'tramp-default-method-alist 
-;;  '("\\`localhost\\'" "\\`root\\'" "su"))
-;; enable mouse-wheel-mode
-;;(mwheel-install)
 
 (autoload 'fetchmail-mode "fetchmail-mode.el" "Mode for editing .fetchmailrc files" t)
 (autoload 'dns-mode "dns-mode.el" "Mode for editing dns files" t)
 (add-to-list 'auto-mode-alist '("\\.dns?\\'" . dns-mode))
 (autoload 'netsaint-mode "netsaint-mode.el" "Mode for editing netsaint cfg files" t)
-;;(autoload 'color-theme "color-theme.el" "color themes" t)
 (add-hook 'netsaint-mode-hook 'turn-on-font-lock)
 (autoload 'php-mode "php-mode.el" "mode for editing php files" t)
 (add-to-list 'auto-mode-alist '("\\.php?\\'" . php-mode)) 
@@ -228,13 +308,11 @@
         (delete-char 1))))
 
 ;;; dos2unix and unix2dos from Benjamin Rutt's .emacs
-
 ;; Convert A Buffer From Dos ^M End Of Lines To Unix End Of Lines
 (defun Dos2unix ()
  (Interactive)
  (Goto-Char (Point-Min))
  (While (Search-Forward "\R" Nil T) (Replace-Match "")))
-
 
 ;vice versa
 (defun unix2dos ()
@@ -242,14 +320,11 @@
   (goto-char (point-min))
   (while (search-forward "\n" nil t) (replace-match "\r\n")))
 
-
 ; Insert date into buffer
 (defun insert-date ()
   "Insert date at point."
   (interactive)
   (insert (format-time-string "%Y%m%d%H%M%S")))
-;;  (insert (format-time-string "%A, %B %e, %Y %k:%M:%S %z")))
-;;Friday, August  8, 2008  9:22:50 -0400
 
 (setq-default
  frame-title-format
@@ -285,17 +360,7 @@
 ;;; settings based on Perl Best Practices
 (setq fill-column 78)
 (setq auto-fill-mode t)
-
 (defalias 'perl-mode 'cperl-mode)
-
-;; ;; 4 space indents in cperl mode
-;; '(cperl-close-paren-offset -4)
-;; '(cperl-continued-statement-offset 4)
-;; '(cperl-indent-level 4)
-;; '(cperl-indent-parens-as-block t)
-;; '(cperl-tab-always-indent t)
-
-
 ;; ;;; END settings based on Perl Best Practices
 
 ;; added on 20080319 for perlcritic minor mode
@@ -305,8 +370,6 @@
 (autoload 'perlcritic-mode   "perlcritic" "" t)
 (eval-after-load "cperl-mode"
   '(add-hook 'cperl-mode-hook 'perlcritic-mode))
-;; (eval-after-load "perl-mode"
-;;   '(add-hook 'perl-mode-hook 'perlcritic-mode))
 
 ;; added on 20030408 from url http://list-archive.xemacs.org/xemacs/199805/msg00364.html
 
@@ -315,7 +378,6 @@
 (add-hook 'cperl-mode-hook
   (defun my-cperl-mode-hook ()
     (setq cperl-mode t)
-;;    (executable-set-magic "perl" "-w")
     (define-key cperl-mode-map "\C-c'" 'cperl-toggle-abbrev)
     (define-key cperl-mode-map "\C-c;" 'cperl-toggle-auto-newline)
     (define-key cperl-mode-map "\C-c)" (deftoggle cperl-electric-parens-mark))
@@ -380,18 +442,6 @@
     (goto-char (if (<= orig-point (point-max))
                    orig-point
                  (point-max)))))
-
-;    (define-key cperl-mode-map "\C-x`"    'cperldb-next-error)))
-
-;; (global-set-key "\C-h\C-h" 'my-cperl-help-map) ; C-h C-p too far
-;; (define-prefix-command 'my-cperl-help-map)
-;; (define-key my-cperl-help-map "\C-q" 'cperl-info-on-current-command) ; quick
-;; (define-key my-cperl-help-map "\C-m" 'my-cperldoc) ; man
-;; (define-key my-cperl-help-map "\C-i" 'my-cperl-info)
-;; (define-key my-cperl-help-map "\C-f" 'my-cperl-info-faq)
-;; (define-key my-cperl-help-map "\C-d" 'my-cperldoc)
-;; (define-key my-cperl-help-map "\C-@" 'cperl-get-help) ; one-line
-;; (define-key my-cperl-help-map [(control ?\ )] 'cperl-get-help)
 
 (defvar my-perldoc-history nil)
 
@@ -467,14 +517,6 @@ With positive ARG set it, with nonpositive ARG reset it."
             `(message "%s is %s" (quote ,sym) ,get)))
        ,get)))
 
-
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;; File: .emacs 
-;; ;; Author: Your Name
-;; ;; Description: Emacs Customizations
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ;; HTML Helper mode
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -490,24 +532,15 @@ With positive ARG set it, with nonpositive ARG reset it."
 ;; Insert new document HTML template
 (setq html-helper-build-new-buffer t)
 
-;; Insert address
-(setq html-helper-address-string 
-  "<a href=\"mailto:keith.ledford@ericsson.com\">Keith Ledford &lt;keith.ledford@ericsson.com&gt;</a>")
+;; ;; Insert address
+;; (setq html-helper-address-string 
+;;   "<a href=\"mailto:keith.ledford@ericsson.com\">Keith Ledford &lt;keith.ledford@ericsson.com&gt;</a>")
 
 ;; Enable time stamp
 (setq html-helper-do-write-file-hooks t)
 
 ;; Enable hyperlink prompt
 (setq tempo-interactive t)
-
-;; (autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
-;; (setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
-;; (setq html-helper-build-new-buffer t)
-;; (setq html-helper-address-string
-;; "<!-- Created by Darrell Golliher - golliher@coe.uga.edu-->")
-;; (setq html-helper-timestamp-start "")
-;; (setq html-helper-timestamp-end "")
-
 
 ;;Bouncing Brackets
 ;;http://www.happygiraffe.net/emacstips
@@ -528,8 +561,6 @@ With positive ARG set it, with nonpositive ARG reset it."
 
 (put 'upcase-region 'disabled nil)
 
-
-
 (defun procmail-mode ()
   "Mode for highlighting procmailrc files"
   (interactive)
@@ -548,15 +579,10 @@ With positive ARG set it, with nonpositive ARG reset it."
 	    '("\$[A-Za-z0-9_]+"
 	      . font-lock-function-name-face)))
 
-
-
 ;; Enable dot-mode
 (autoload 'dot-mode "dot-mode" nil t) ; vi `.' command emulation
-;;(global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
-;;				 (message "Dot mode activated.")))
 (require 'dot-mode)
 (add-hook 'find-file-hooks 'dot-mode-on)
-
 
 ;; PC Function Keys
 (global-set-key [f1] 'goto-line) 
@@ -564,7 +590,6 @@ With positive ARG set it, with nonpositive ARG reset it."
 (global-set-key [f3] 'uncomment-region)
 (global-set-key [f4] 'indent-region)
 (global-set-key [f5] 'bury-buffer)
-
 (global-set-key [f8] 'run-perl) 
 
 ;; ------------------------------------------------------------
@@ -572,10 +597,8 @@ With positive ARG set it, with nonpositive ARG reset it."
 ;; auto-insert for .pl and .pm and .ptk
 (load-library "autoinsert")
 
-
 (define-auto-insert "\\.pl$" 'perl-auto-insert)
 (defun perl-auto-insert ()
-;;    (load-file "~/.emacs_perl_template.elc")
   (progn
     (insert "#!/usr/bin/env perl\n")
     (insert "#\n# $Id$\n#\n\n")
@@ -620,32 +643,7 @@ With positive ARG set it, with nonpositive ARG reset it."
     )
   )
 
-;; ;; Perl-Menu
-;; (define-key global-map [menu-bar perl-menu]
-;;   (cons "Perl" (make-sparse-keymap "Perl")))
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [goto-line-label] '("Goto Line" . goto-line) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [comment-region-label] '("Comment Highlighted Region" . comment-region) t)
-;; ;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;; ;;   [perltidy-buffer-label] '("Run Perl Tidy" . perltidy-buffer) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [shell-label] '("MS-DOS Command Prompt" . shell) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [indent-region-label] '("Indent Highlighted Region            (<f4>)" . indent-region) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [bury-buffer-label] '("Previous Window" . bury-buffer) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [wrap-all-lines-label] '("Wrap Lines" . wrap-all-lines) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [run-perl-label] '("Run Current Perl Code" . run-perl) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [unix-to-dos-label] '("Reformat UNIX -> DOS" . unix-dos) t)
-;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
-;;   [dos-unix-label] '("Reformat DOS -> UNIX" . dos-unix) t)
-
 (add-hook 'find-file-hooks 'auto-insert)
-
 
 ;; taken from http://sodonnell.wordpress.com/2007/06/21/emacs-ruby-foo/
 (add-hook 'ruby-mode-hook
@@ -688,21 +686,12 @@ With positive ARG set it, with nonpositive ARG reset it."
     (insert "pool = ThreadPool.new(options[:threads].to_i)\n")
     )
   )
-(if (system-type-is-darwin)
-    (defun copy-from-osx ()
-      (shell-command-to-string "pbpaste"))
 
-  (defun paste-to-osx (text &optional push)
-    (let ((process-connection-type nil)) 
-      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-        (process-send-string proc text)
-        (process-send-eof proc))))
 
-  (setq interprogram-cut-function 'paste-to-osx)
-  (setq interprogram-paste-function 'copy-from-osx)
-)
 
 ;; ;; Adding simple note support
 ;; (require 'simplenote)
 ;; (setq simplenote-email "keith@ledfords.us")
 ;; (simplenote-setup)
+
+
