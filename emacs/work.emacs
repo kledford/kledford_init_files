@@ -1,0 +1,646 @@
+(custom-set-variables
+  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
+ '(all-christian-calendar-holidays t t)
+ '(c-comment-prefix-regexp (quote ((java-mode . "") (other . ""))))
+ '(case-fold-search t)
+ '(cperl-close-paren-offset -4)
+ '(cperl-continued-statement-offset 4)
+ '(cperl-indent-level 4)
+ '(cperl-tab-always-indent t)
+ '(current-language-environment "English")
+ '(font-lock-global-modes t)
+ '(font-lock-maximum-size 71680)
+ '(font-lock-mode-hook (quote (ignore)))
+ '(global-font-lock-mode t nil (font-lock))
+ '(hi-lock-mode t nil (hi-lock))
+ '(mouse-sel-mode t nil (mouse-sel))
+ '(nxml-auto-insert-xml-declaration-flag t)
+ '(nxml-bind-meta-tab-to-complete-flag t)
+ '(nxml-slash-auto-complete-flag t)
+ '(post-email-address "kledford@uga.edu")
+ '(query-user-mail-address nil)
+ '(show-trailing-whitespace t)
+ '(transient-mark-mode t)
+ '(develock-auto-enable nil)
+ '(column-number-mode t)
+ '(user-mail-address "kledford@uga.edu"))
+(setq lpr-command "xpp")
+(setq inhibit-splash-screen t) 
+;; Make all "yes or no" prompts show "y or n" instead
+(fset 'yes-or-no-p 'y-or-n-p)
+(custom-set-faces
+  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
+ '(default ((t (:size "14pt" :family "Charter"))))
+ '(trailing-whitespace ((((class color) (background dark)) (:foreground "red" :underline unspecified)))))
+;;(setq load-path (cons "~/emacs/" load-path))
+(add-to-list 'load-path "~/emacs/")
+;;(require 'psvn)
+;;(require 'tail)
+(require 'color-theme)
+(color-theme-dark-laptop)
+
+;;; taken from ~/svn/localhost/repos/kledford/
+;;; Display full path name if appropriate on mode line.
+(add-hook 'find-file-hooks 
+	  '(lambda ()
+	     (setq mode-line-buffer-identification 'buffer-file-truename)))
+
+(require 'ruby-block)
+(ruby-block-mode t)
+(setq ruby-block-highlight-toggle t)
+
+(global-set-key "\C-cc" 'comment-region)
+(setq comment-start "# ")
+(global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-xg" 'goto-line)
+(global-set-key [delete] 'delete-char)
+(global-set-key [kp-delete] 'delete-char)
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\M-w" 'kill-region)
+;;(setq column-number-mode 't)
+
+;;;start gnuserv 20070403
+(server-start)
+
+(setq frame-title-format
+  '("%S: " (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+
+(require 'backups)
+(move-backups t)
+(setq backup-directory "~/.emacs_backups")
+(setq browse-url-netscape-program "/home/kledford/bin/moz_newtab.sh")
+
+;; Recent files 
+;; http://www.emacswiki.org/cgi-bin/wiki/RecentFiles
+;;(require 'recentf)
+(recentf-mode 1)
+
+;;(load "/usr/share/emacs/site-lisp/site-gentoo")
+
+;; FOR crypt++.el
+;;(require 'crypt++)
+(setq crypt-encryption-type 'gpg
+      crypt-encryption-file-extension "\\(\\.gpg\\)$"
+      crypt-bind-insert-file nil
+      crypt-freeze-vs-fortran nil)
+(define-key global-map "\C-c\C-e" 'crypt-encrypted-mode)
+(modify-coding-system-alist 'file "\\.bz\\'" 'no-conversion)
+(modify-coding-system-alist 'file "\\.bz2\\'" 'no-conversion)
+(modify-coding-system-alist 'file "\\.gpg\\'" 'no-conversion)
+(modify-coding-system-alist 'file "\\.gz\\'" 'no-conversion)
+(modify-coding-system-alist 'file "\\.Z\\'" 'no-conversion)
+;; END FOR crypt++.el
+
+
+;; use Unix-style line endings
+;;(setq-default buffer-file-coding-system "unix")
+(setq-default inhibit-eol-conversion t)
+(set-buffer-file-coding-system 'no-conversion)
+;;(set-buffer-file-coding-system 'undecided-unix)
+
+(progn        ; Font-locking faces set-up
+  (setq
+   font-lock-maximum-decoration t
+   font-lock-maximum-size (if font-lock-maximum-decoration
+ 			      (* 70 1024)
+			    (* 150 1024))))
+
+;;(add-to-list 'load-path "~/emacs/tramp.emacs/lisp/")
+;;(add-to-list 'load-path "~/emacs/tramp-2.1.12/lisp/")
+;;(add-to-list 'load-path "~/emacs/tramp2.1.12/share/emacs/site-lisp/")
+(require 'tramp)
+(setq tramp-default-method "scp")
+
+;; (add-to-list
+;;  'tramp-multi-connection-function-alist
+;;  '("home" tramp-multi-connect-rlogin "ssh %h -l kledford -p 2222%n")
+;;  '("sshf" tramp-multi-connect-rlogin "ssh %h -l %u -t ssh %n"))
+;; (add-to-list 'tramp-default-method-alist 
+;;  '("\\`localhost\\'" "\\`root\\'" "su"))
+;; enable mouse-wheel-mode
+(mwheel-install)
+
+(autoload 'fetchmail-mode "fetchmail-mode.el" "Mode for editing .fetchmailrc files" t)
+(autoload 'dns-mode "dns-mode.el" "Mode for editing dns files" t)
+(add-to-list 'auto-mode-alist '("\\.dns?\\'" . dns-mode))
+(autoload 'netsaint-mode "netsaint-mode.el" "Mode for editing netsaint cfg files" t)
+;;(autoload 'color-theme "color-theme.el" "color themes" t)
+(add-hook 'netsaint-mode-hook 'turn-on-font-lock)
+(autoload 'php-mode "php-mode.el" "mode for editing php files" t)
+(add-to-list 'auto-mode-alist '("\\.php?\\'" . php-mode)) 
+(autoload 'post-mode "/home/kledford/emacs/post" "Mode for editing mail/news messages" t)
+(add-to-list 'auto-mode-alist '("\\mutt.*\\'" . post-mode)) 
+
+
+;; Enable html mode for .tpl files (nsite)
+(add-to-list 'auto-mode-alist
+             '("\\.tpl$" . html-mode))
+(setq html-helper-do-write-file-hooks t)
+
+;; Enable php mode for .str files (nsite)
+(add-to-list 'auto-mode-alist
+             '("\\.str$" . php-mode))
+
+(add-to-list 'auto-mode-alist
+	     '("\\.pl$" . cperl-mode))
+
+(add-to-list 'auto-mode-alist
+	     '("\\.cgi$" . cperl-mode))
+
+(autoload 'muttrc-mode "muttrc-mode.el"
+  "Major mode to edit muttrc files" t)
+(setq auto-mode-alist
+      (append '(("muttrc\\'" . muttrc-mode))
+	      auto-mode-alist))
+
+;;; Convert DOS file format to Unix
+
+;; look at 
+;; M-x comint-strip-ctrl-m
+;;   Command: Strip trailing `^M' characters from the current output group.
+
+
+;; from: elf@ee.ryerson.ca (Luis Fernandes)
+;; 22 May 1997
+
+;;; Usage: M-x dos2unix
+;;;
+(defun dos2unix ()
+  "Convert this entire buffer from MS-DOS text file format to UNIX."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (replace-regexp "\r$" "" nil)
+    (goto-char (1- (point-max)))
+    (if (looking-at "\C-z")
+        (delete-char 1))))
+
+;;; dos2unix and unix2dos from Benjamin Rutt's .emacs
+
+;; Convert A Buffer From Dos ^M End Of Lines To Unix End Of Lines
+;(Defun Dos2unix ()
+;  (Interactive)
+;  (Goto-Char (Point-Min))
+;  (While (Search-Forward "\R" Nil T) (Replace-Match "")))
+
+
+;vice versa
+(defun unix2dos ()
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\n" nil t) (replace-match "\r\n")))
+
+
+; Insert date into buffer
+(defun insert-date ()
+  "Insert date at point."
+  (interactive)
+  (insert (format-time-string "%Y%m%d%H%M%S")))
+;;  (insert (format-time-string "%A, %B %e, %Y %k:%M:%S %z")))
+;;Friday, August  8, 2008  9:22:50 -0400
+
+(setq-default
+ frame-title-format
+ (list 
+  '((buffer-file-name 
+     " %f" 
+     (dired-directory
+      dired-directory
+      (revert-buffer-function 
+       " %b"
+       ("%b - Dir:  " default-directory)))))))
+
+(setq-default
+ icon-title-format
+ (list 
+  '((buffer-file-name 
+     " %f" 
+     (dired-directory
+      dired-directory
+      (revert-buffer-function 
+       " %b"
+       ("%b - Dir:  " default-directory)))))))
+
+; don't automatically add new lines when 
+;;scrolling down at the bottom of a buffer 
+(setq next-line-add-newlines nil)
+
+(setq display-time-day-and-date t
+   display-time-24hr-format nil)
+   (display-time)
+(setq line-number-mode t)
+
+;;; settings based on Perl Best Practices
+(setq fill-column 78)
+(setq auto-fill-mode t)
+
+(defalias 'perl-mode 'cperl-mode)
+
+;; ;; 4 space indents in cperl mode
+;; '(cperl-close-paren-offset -4)
+;; '(cperl-continued-statement-offset 4)
+;; '(cperl-indent-level 4)
+;; '(cperl-indent-parens-as-block t)
+;; '(cperl-tab-always-indent t)
+
+
+;; ;;; END settings based on Perl Best Practices
+
+;; added on 20080319 for perlcritic minor mode
+
+(autoload 'perlcritic        "perlcritic" "" t)
+(autoload 'perlcritic-region "perlcritic" "" t)
+(autoload 'perlcritic-mode   "perlcritic" "" t)
+(eval-after-load "cperl-mode"
+  '(add-hook 'cperl-mode-hook 'perlcritic-mode))
+;; (eval-after-load "perl-mode"
+;;   '(add-hook 'perl-mode-hook 'perlcritic-mode))
+
+;; added on 20030408 from url http://list-archive.xemacs.org/xemacs/199805/msg00364.html
+
+(make-variable-buffer-local 'cperl-mode)
+(setq-default cperl-mode nil)           ; is this buffer in perl-mode?
+(add-hook 'cperl-mode-hook
+  (defun my-cperl-mode-hook ()
+    (setq cperl-mode t)
+;;    (executable-set-magic "perl" "-w")
+    (define-key cperl-mode-map "\C-c'" 'cperl-toggle-abbrev)
+    (define-key cperl-mode-map "\C-c;" 'cperl-toggle-auto-newline)
+    (define-key cperl-mode-map "\C-c)" (deftoggle cperl-electric-parens-mark))
+    (define-key cperl-mode-map "\C-c(" (deftoggle cperl-electric-parens
+       cperl-val
+       (macro lambda (sym val) `(setq ,sym (if ,val t 'null))) nil nil
+       ((setq my-cperl-electric-parens (cperl-val 'cperl-electric-parens)))))
+    (setq my-cperl-electric-parens (cperl-val 'cperl-electric-parens))
+    (unless (eq (caar minor-mode-alist) 'my-cperl-electric-parens)
+      (mapc #'(lambda (x)
+                (setq minor-mode-alist
+                      (cons x (delete x minor-mode-alist))))
+            (nreverse '((my-cperl-electric-parens   (cperl-mode "("))
+                        (abbrev-mode                (cperl-mode "'"))
+                        (cperl-auto-newline         (cperl-mode ";"))
+                        (cperl-electric-parens-mark (cperl-mode ")"))))))
+    (define-key cperl-mode-map "\C-hf" nil)
+    (define-key cperl-mode-map "\C-hv" nil)
+    (define-key cperl-mode-map "\C-c\C-v" 'send-cperldb-command)
+    (define-key cperl-mode-map "\C-c\M-+" 'cperl-beautify-regexp)
+    (define-key cperl-mode-map "\C-c "    'cperl-find-bad-style)
+    (define-key cperl-mode-map "\C-c="    'cperl-lineup)
+    (define-key cperl-mode-map "\C-cd"    'cperldb-break)
+    (define-key cperl-mode-map "\C-ch"    'cperl-find-pods-heres)
+    (define-key cperl-mode-map "\C-cp"    'send-cperldb-command) ; "print"
+    (define-key cperl-mode-map "\C-xpt" 'perltidy-buffer)
+    (define-key cperl-mode-map "\C-x`"    'cperldb-next-error)))
+
+;; Build the function menu when I enter Cperl mode
+(add-hook 'cperl-mode-hook 'imenu-add-menubar-index)
+
+(add-to-list 'cperl-mode-hook
+             (lambda ()
+               (substitute-key-definition
+                'save-buffer
+                'cperl-save-buffer
+                cperl-mode-map
+                global-map)))
+(defvar cperl-auto-tidy t)
+(defun cperl-save-buffer (&optional args)
+  "Perltidy and save current buffer in visited file if modified."
+  (interactive)
+  (if (and (buffer-modified-p)
+           cperl-auto-tidy)
+      (perltidy-buffer))
+  (save-buffer))
+(defun perl-buffer () (interactive (shell-command-on-region  (point-min) (point-max) "perl" nil nil nil)))
+
+(defun cperl-auto-tidy (&optional arg)
+  "Automatically perltidy (or not)"
+  (setq cperl-auto-tidy (if arg t nil)))
+(defun cperl-toggle-auto-tidy ()
+  (interactive)
+  (setq cperl-auto-tidy (not cperl-auto-tidy)))
+(defun perltidy-buffer ()
+  "Runs an entire buffer through perltidy."
+  (interactive)
+  (let ((orig-point (point)))
+    (shell-command-on-region
+     (point-min) (point-max)
+     "perltidy -st -se -q -syn" nil t shell-command-default-error-buffer)
+    (goto-char (if (<= orig-point (point-max))
+                   orig-point
+                 (point-max)))))
+
+;    (define-key cperl-mode-map "\C-x`"    'cperldb-next-error)))
+
+;; (global-set-key "\C-h\C-h" 'my-cperl-help-map) ; C-h C-p too far
+;; (define-prefix-command 'my-cperl-help-map)
+;; (define-key my-cperl-help-map "\C-q" 'cperl-info-on-current-command) ; quick
+;; (define-key my-cperl-help-map "\C-m" 'my-cperldoc) ; man
+;; (define-key my-cperl-help-map "\C-i" 'my-cperl-info)
+;; (define-key my-cperl-help-map "\C-f" 'my-cperl-info-faq)
+;; (define-key my-cperl-help-map "\C-d" 'my-cperldoc)
+;; (define-key my-cperl-help-map "\C-@" 'cperl-get-help) ; one-line
+;; (define-key my-cperl-help-map [(control ?\ )] 'cperl-get-help)
+
+(defvar my-perldoc-history nil)
+
+(defun my-perldoc (arg)
+  (interactive
+   (progn
+     (autoload 'perl-word-at-point-hard "perl")
+     (let* ((def (perl-word-at-point-hard))
+            (arg (read-string (format "PerlDoc%s: " 
+                                      (if def (format " (default %s)" def) ""))
+                              my-perldoc-history)))
+       (list (if (string= arg "") def arg)))))
+  (let ((manual-program "perldoc"))
+    (man arg)))
+
+(defvar my-perl-info-nodes
+  (sort 
+   (append '(("TOC"  . "perltoc")
+             ("Top"  . "Top")
+             ("Perl" . "perl")
+             ("0"    . "perlfaq")
+             ("Func" . "Function Index")
+             ("Var"  . "Variable Index")
+             ("Diag" . "Diagnostic Message Index"))
+           (mapcar (function (lambda (x) (cons x (concat "perl" x))))
+                   '("delta" "faq" "data" "syn" "op" "re" "run" "func"
+                     "var" "sub" "mod" "modlib" "form" "locale" "ref" "dsc"
+                     "lol" "toot" "obj" "tie" "bot" "ipc" "debug" "diag" "sec"
+                     "trap" "style" "pod" "book" "embed" "apio" "xs" "xstut"
+                     "guts" "call"))
+           (mapcar (function (lambda (x) 
+                               (cons (int-to-string x)
+                                     (format "perlfaq%d" x))))
+                   '(1 2 3 4 5 6 7 8 9)))
+   (function (lambda (x y) (string< (car x) (car y))))))
+
+(defun my-perl-info (str)
+  (interactive 
+   (list (completing-read "Info perl: " my-perl-info-nodes nil t)))
+  (Info-goto-node (concat "(perl)" (cdr (assoc str my-perl-info-nodes)))))
+
+(defun my-perl-info-faq (num)
+  (interactive
+   (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg)
+           (read-number "Info perlfaq[1-9]: " 'int))))
+  (my-perl-info (if (= num 0) "faq" (int-to-string num))))
+
+(defmacro deftoggle (sym &optional get set comment before after message)
+  "Define a function my-toggle-SYM to toggle SYM on and off.
+GET and SET are either nil in which case SYM and (setq SYM) are used,
+  functions (eg default-value and set-default) called with SYM and SYM VAL,
+  or (macro lambda (SYM) ...) and (macro lambda (SYM VAL) ...) respectively.
+COMMENT is additional comment for my-toggle-SYM,
+BEFORE and AFTER are lists of additional forms around the toggle code,
+MESSAGE is a (macro lambda (SYM VAL) ...) replacing the normal \"SYM is VAL.\""
+  (cond ((null get) (setq get sym))
+        ((symbolp get) (setq get `(,get (quote ,sym))))
+        ((setq get (macroexpand (list get sym)))))
+  (let ((val `(if arg (> (prefix-numeric-value arg) 0) (not ,get))))
+    (cond ((null set) (setq set `(setq ,sym ,val)))
+          ((symbolp set) (setq set `(,set (quote ,sym) ,val)))
+          ((setq set (macroexpand (list set sym val)))))
+    `(defun ,(intern (concat "my-toggle-" (symbol-name sym))) (&optional arg)
+       ,(concat "Toggle " (symbol-name sym) ". Return the new value.
+With positive ARG set it, with nonpositive ARG reset it."
+                (if comment (concat "\n" comment)))
+       (interactive "P")
+       ,@before
+       ,set
+       ,@after
+       (when (interactive-p)
+         ,(if message (macroexpand (list message sym get))
+            `(message "%s is %s" (quote ,sym) ,get)))
+       ,get)))
+
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; File: .emacs 
+;; ;; Author: Your Name
+;; ;; Description: Emacs Customizations
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; HTML Helper mode
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ;(setq load-path (cons "path_to_html-helper-mode_directory" load-path))
+(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
+(setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.htm$" . html-helper-mode) auto-mode-alist))
+
+;; Recognize server-parsed HTML files
+(setq auto-mode-alist (cons '("\\.shtml$" . html-helper-mode) auto-mode-alist))
+
+;; Insert new document HTML template
+(setq html-helper-build-new-buffer t)
+
+;; Insert address
+(setq html-helper-address-string 
+  "<a href=\"mailto:kledford@uga.edu\">Keith Ledford &lt;kledford@uga.edu&gt;</a>")
+
+;; Enable time stamp
+(setq html-helper-do-write-file-hooks t)
+
+;; Enable hyperlink prompt
+(setq tempo-interactive t)
+
+;; (autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
+;; (setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
+;; (setq html-helper-build-new-buffer t)
+;; (setq html-helper-address-string
+;; "<!-- Created by Darrell Golliher - golliher@coe.uga.edu-->")
+;; (setq html-helper-timestamp-start "")
+;; (setq html-helper-timestamp-end "")
+
+
+;;Bouncing Brackets
+;;http://www.happygiraffe.net/emacstips
+
+;;One of the nice things about vi is that you can use the % key to
+;;find matching partner of a parenthesis. This function and keybinding
+;;makes emacs do the same, but only when the cursor is on top of a
+;;parenthesis, otherwise it just inserts a percent sign as you would
+;;expect.
+
+(defun match-paren (arg)
+  "Go to the matching parenthesis if on parenthesis otherwise insert %."
+  (interactive "p")
+  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+        (t (self-insert-command (or arg 1)))))
+(global-set-key "%" 'match-paren)
+
+(put 'upcase-region 'disabled nil)
+
+
+
+(defun procmail-mode ()
+  "Mode for highlighting procmailrc files"
+  (interactive)
+  (setq mode-name "Procmail"
+	major-mode 'procmail))
+
+(setq procmail-font-lock-keywords
+      (list '("#.*"
+	      . font-lock-comment-face)
+	    '("^[\t ]*:.*"
+	      . font-lock-type-face)
+	    '("[A-Za-z_]+=.*"
+	      . font-lock-keyword-face)
+	    '("^[\t ]*\\*.*"
+	      . font-lock-doc-string-face)
+	    '("\$[A-Za-z0-9_]+"
+	      . font-lock-function-name-face)))
+
+
+
+;; Enable dot-mode
+(autoload 'dot-mode "dot-mode" nil t) ; vi `.' command emulation
+;;(global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
+;;				 (message "Dot mode activated.")))
+(require 'dot-mode)
+(add-hook 'find-file-hooks 'dot-mode-on)
+
+
+;; PC Function Keys
+(global-set-key [f1] 'goto-line) 
+(global-set-key [f2] 'comment-region)
+(global-set-key [f3] 'uncomment-region)
+(global-set-key [f4] 'indent-region)
+(global-set-key [f5] 'bury-buffer)
+
+(global-set-key [f8] 'run-perl) 
+
+;; ------------------------------------------------------------
+;; own enhancements
+;; auto-insert for .pl and .pm and .ptk
+(load-library "autoinsert")
+
+
+(define-auto-insert "\\.pl$" 'perl-auto-insert)
+(defun perl-auto-insert ()
+;;    (load-file "~/.emacs_perl_template.elc")
+  (progn
+    (insert "#!/usr/bin/env perl\n")
+    (insert "#\n# $Id$\n#\n\n")
+    (insert "use warnings;\n")
+    (insert "use strict;\n")
+    (insert "our $VERSION = '0.1.0';\n")
+    (insert "use Carp;\n")
+    (insert "use English;\n")
+    (insert "use File::Basename;\n")
+    (insert "use Getopt::Long;\n")
+    (insert "use Pod::Usage;\n")
+    (insert "use Data::Dumper;\n$Data::Dumper::Indent   = 1;\n")
+    (insert "$Data::Dumper::Sortkeys = 1;\n\n")
+    (insert "my %opt = (\n\t\n);\n")
+    (insert "my @opt_specs = (\n\t")
+    (insert "\t# Default options for help\n")
+    (insert "\t'usage',\n")
+    (insert "\t'help',\n")
+    (insert "\t'man',\n")
+    (insert "\t'version',\n")
+    (insert "\n);\n")
+    (insert "GetOptions(\\%opt, @opt_specs) or pod2usage -exitval => 2, -verbose => 0;\n")
+    (insert "pod2usage(-verbose => 0) if $opt{usage};\n")
+    (insert "pod2usage(-verbose => 1) if $opt{help};\n")
+    (insert "pod2usage(-verbose => 2) if $opt{man};\n")
+    (insert "version()                if $opt{version};\n\n")
+    (insert "## subs ##\n")
+    (insert "sub version {\n")
+    (insert "my $program = basename($0);\n")
+    (insert "print <<\"EOF\";\n\n")
+    (insert "$program $VERSION\n")
+    (insert "\n")
+    (insert "Copyright (C) 2010, Ericsson\n")
+    (insert "\n")
+    (insert "EOF\n")
+    (insert "exit 0;\n")
+    (insert "}\n\n")
+    (insert "## main ##")
+    (insert "\n\n")
+    (insert "=head1 NAME\n
+=head1 VERSION")
+    )
+  )
+
+
+
+(define-auto-insert "\\.rb$" 'ruby-auto-insert)
+(defun ruby-auto-insert ()
+  (progn
+    (insert "#!/usr/bin/env ruby\n")
+    (insert "#\n# $Id$\n#\n\n")
+    (insert "require 'rubygems'\n")
+    (insert "require 'trollop'\n")
+    (insert "require 'pp'\n")
+    (insert "require 'thread'\n\n")
+    (insert "# get command line options\n")
+    (insert "options = Trollop::options do\n")
+    (insert "   version \"$Id: $\"\n")
+    (insert "   banner <<-EOB\n")
+    (insert "   #{$0} has the following options\n")
+    (insert "   EOB\n\n")
+    (insert "   opt :threads, \"number of threads to run\", :default => 20\n")
+    (insert "   opt :output, \"output format [csv, text]\", :default => \"csv\"\n")
+    (insert "   opt :verbose, \"verbose output sent to stderr\", :default => false\n")
+    (insert "end\n")
+    (insert "Trollop::die \"need at least one arg\" if ARGV.empty?\n")
+    (insert "\n\n")
+    (insert "pool = ThreadPool.new(options[:threads].to_i)\n")
+    )
+  )
+
+
+;; taken from http://sodonnell.wordpress.com/2007/06/21/emacs-ruby-foo/
+(add-hook 'ruby-mode-hook
+	  (lambda()
+            (add-hook 'local-write-file-hooks
+                      '(lambda()
+                         (save-excursion
+                           (untabify (point-min) (point-max))
+                           (delete-trailing-whitespace)
+                           )))
+            (set (make-local-variable 'indent-tabs-mode) 'nil)
+            (set (make-local-variable 'tab-width) 2)
+            (imenu-add-to-menubar "RUBYMENU")
+            (define-key ruby-mode-map "\C-m" 'newline-and-indent) ;Not sure if this line is 100% right but it works!
+            (require 'ruby-electric)
+            (ruby-electric-mode t)
+            ))
+
+
+
+;; ;; Perl-Menu
+;; (define-key global-map [menu-bar perl-menu]
+;;   (cons "Perl" (make-sparse-keymap "Perl")))
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [goto-line-label] '("Goto Line" . goto-line) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [comment-region-label] '("Comment Highlighted Region" . comment-region) t)
+;; ;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;; ;;   [perltidy-buffer-label] '("Run Perl Tidy" . perltidy-buffer) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [shell-label] '("MS-DOS Command Prompt" . shell) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [indent-region-label] '("Indent Highlighted Region            (<f4>)" . indent-region) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [bury-buffer-label] '("Previous Window" . bury-buffer) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [wrap-all-lines-label] '("Wrap Lines" . wrap-all-lines) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [run-perl-label] '("Run Current Perl Code" . run-perl) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [unix-to-dos-label] '("Reformat UNIX -> DOS" . unix-dos) t)
+;; (define-key-after (lookup-key global-map [menu-bar perl-menu])
+;;   [dos-unix-label] '("Reformat DOS -> UNIX" . dos-unix) t)
+
+(add-hook 'find-file-hooks 'auto-insert)
+
