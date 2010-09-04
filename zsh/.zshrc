@@ -1,66 +1,13 @@
 # zsh init file
-#
-# Much if this came from other places, and
-# some of it is kind of Frankensteined. Ah
-# well, it works :)
-#
-# For more info on zsh:  http://www.zsh.org
 
 #taken from dnarayan@depot
 KEYCHAIN=`which keychain`   # Keychain SSH agent forwarding program
-#SSH_KEYS=(${HOME}/.ssh/id_dsa ${HOME}/.ssh/n2admin2 ${HOME}/.ssh/opsadmin)   # SSH Private Keys
 SSH_KEYS=(${HOME}/.ssh/id_dsa)   # SSH Private Keys
-
-# Keychain initialization
-if [ -f "${KEYCHAIN}" ]; then
-    for key in ${SSH_KEYS}; do
-        if [ -f "${key}" ]; then
-            ${KEYCHAIN} --nogui -q $key
-            source ${HOME}/.keychain/${HOST}-sh > /dev/null
-        fi
-    done
-fi
-
 #END taken from dnarayan@depot
 
 # autoloads 
 autoload -U compinit
-#compinit
 compinit -d ~/.zcompdump_$ZSH_VERSION
-
-# Environment variables
-
-# Do things like this... 
-export CVSROOT=':ext:kledford@cvs.us.tandbergtv.com:/usr/local/cvsroot'
-# export CVSROOT=':ext:kledford@cvs:/usr/local/cvsroot'
-export CVS_RSH='/usr/bin/ssh'
-# export PATH=$PATH:/sbin:/usr/sbin:$HOME/bin:/opt/oracle/OraHome1/bin
-export PATH=${PATH}:~/bin
-export PRINTER=Laserjet
-
-###TTV settings
-export ZSH_HOSTS=${HOME}/.zsh/ttv_hosts
-export ADHOST=atl-dc1
-export ADUSER=kledford
-export RUBYOPT=rubygems
-
-
-###########Oracle Environment settings##########################
-# ORACLE_BASE=/opt/oracle
-# ORACLE_HOME=/opt/oracle/OraHome1
-# ORACLE_SID=reporter
-# TWO_TASK=reporter
-# export ORACLE_BASE ORACLE_HOME ORACLE_SID TWO_TASK
-
-# Hosts to use for completion - use hosts from both /etc/hosts and DNS
-hosts=(`grep '^[0-9]' /etc/hosts | awk '{print $2}' | xargs` `grep "^Host" ~/.ssh/config |cut -f 2 -d" " |grep -v "*"|xargs` ${${${(f)"$(<$HOME/.ssh/known_hosts)"}%%\ *}%%,*})
-
-if [ -f ${ZSH_HOSTS} ]; then
-    hosts=($hosts `cat ${ZSH_HOSTS} | xargs`)
-fi
-
-#zstyle '*' hosts $hosts
-zstyle ':completion:*:hosts' hosts $hosts 
 
 # Aliases
 alias d="find . -maxdepth 1 -type d|columnize"
@@ -72,45 +19,26 @@ alias die='exit'
 alias pico='pico -w -z'
 alias fm='frm -s new'
 alias pa='ps aux'
-alias 2X='startx -- :1 vt8'
 alias getlatest="cvs export -D 'today'"
 alias fetch='/usr/bin/fetchmail -d 300'
 alias grep='grep --color=always'
 alias perltrace='perl -MDevel::SimpleTrace'
 alias sortip='sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4'
 
-if [ ${HOST} = 'Keith-Ledfords-MBP.local' ]; then
-    alias WorkMutt="Eterm -T \"Work Mutt\" -e mutt -F ~/.mutt/.muttrc-n2bb-imap &"
-    alias PersonalMutt="Eterm -T \"Personal Mutt\" -e mutt -F ~/.mutt/.muttrc-ledfords.us &"
-    alias goodxterm="xterm -T mutt -bg black -fg white -fn lucidasanstypewriter-18"
-    alias terminalserver="rdesktop -5 -K -g 1024x768 -d us -n atl-kledford -u kledford n2-atl-nocts.us.tandbergtv.com 2>/dev/null &"
-    alias adminterminalserver="rdesktop -g 1280x1024 -n n2-atl-nocts -u Administrator n2-atl-nocts  &"
-    alias procmaillog='tail -f ~/Mail/.maillog |colorize'
-    alias tailmaillogs='tail -f ~/Mail/.maillog /var/log/mail | colorize &'
-    alias sqlquery="psql -e dcl -h n2-atl-nocdb -U postgres -c '$@;'"
-    alias svn_addid='svn propset svn:keywords "Id"'
-    alias svn_x_bit='svn propset svn:executable ON'
-    alias ls='ls -aFvG'
-    alias emacs='~/bin/edit'
-    alias aquamacs='~/bin/edit'
-    alias diff='/usr/bin/diff -pubBbd'
-    export PATH=/opt/local/bin:${PATH}
-fi
-
-
 # history settings
 export HISTFILE=~/.zsh_history/history
 export HISTSIZE=10000
 export SAVEHIST=10000
-
-
-# Other misc settings
-LISTMAX=0
-
+export PATH=${PATH}:~/bin
+export RUBYOPT=rubygems
+export ZSH_HOSTS=${HOME}/.zsh/ttv_hosts
+export EDITOR="emacs"
 # export PGHOST=atl-linux2
 # export PGUSER=postgres
 # export PGDATABASE=template1
-export EDITOR="emacs"
+
+# Other misc settings
+LISTMAX=0
 
 # Expansion options
 zstyle ':completion:*' completer _complete _prefix
@@ -128,7 +56,6 @@ zstyle ':completion:*' squeeze-slashes 'yes'
 
 # Include non-hidden directories in globbed file completions
 # for certain commands
-
 zstyle ':completion::complete:*' '\'
 
 #  tag-order 'globbed-files directories' all-files 
@@ -306,7 +233,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[00;32m'
 
-
 # for rvm
 if [[ -s "$HOME/.rvm/scripts/rvm" ]]  ; then 
     source "$HOME/.rvm/scripts/rvm" ;
@@ -350,8 +276,63 @@ function parse_svn_repos {
     svn info 2>/dev/null| grep URL | cut -f 5- -d"/"| sed -e 's/\(.*\)/\(\1\)/'
 }
 
-PROMPT="$PR_LIGHT_BLUE%n$PR_LIGHT_RED@$PR_LIGHT_BLUE%m$PR_LIGHT_CYAN %2~ \$(check_svn_changes)\$(parse_svn_repos)\$(check_git_changes)\$(parse_git_branch)$PR_CYAN  $PR_LIGHT_WHITE 
-$PR_NO_COLOR $ "
-RPS1="$PR_LIGHT_YELLOW(%D{%m-%d %H:%M})$PR_NO_COLOR"
+if [ ${HOST} = 'Keith-Ledfords-MBP.local' ]; then
+    alias svn_addid='svn propset svn:keywords "Id"'
+    alias svn_x_bit='svn propset svn:executable ON'
+    alias ls='ls -aFvG'
+    alias emacs='~/bin/edit'
+    alias aquamacs='~/bin/edit'
+    alias diff='/usr/bin/diff -pubBbd'
+    export ZSH_HOSTS=${HOME}/.zsh/hosts
+    export PATH=/opt/local/bin:${PATH}
+    PROMPT="$PR_LIGHT_BLUE%n$PR_LIGHT_RED@$PR_LIGHT_BLUE%m$PR_LIGHT_CYAN %2~ \$(check_svn_changes)\$(parse_svn_repos)\$(check_git_changes)\$(parse_git_branch)$PR_CYAN  $PR_LIGHT_WHITE 
+$PR_NO_COLOR$ "
+    RPS1="$PR_LIGHT_YELLOW(%D{%m-%d %H:%M})$PR_NO_COLOR"
+elif [ ${HOST} = 'atl-kledford-desktop' ]; then
+    SSH_KEYS=(${SSH_KEYS} ${HOME}/.ssh/opsadmin_dsa)   # SSH Private Keys
+    alias WorkMutt="Eterm -T \"Work Mutt\" -e mutt -F ~/.mutt/.muttrc-ericsson &"
+    alias goodxterm="xterm -T mutt -bg black -fg white -fn lucidasanstypewriter-18"
+    alias terminalserver="rdesktop -5 -K -g 1024x768 -d us -n atl-kledford -u kledford n2-atl-nocts.us.tandbergtv.com 2>/dev/null &"
+    alias adminterminalserver="rdesktop -g 1280x1024 -n n2-atl-nocts -u Administrator n2-atl-nocts  &"
+    alias procmaillog='tail -f ~/Mail/.maillog |colorize'
+    alias tailmaillogs='tail -f ~/Mail/.maillog /var/log/mail | colorize &'
+    alias sqlquery="psql -e dcl -h n2-atl-nocdb -U postgres -c '$@;'"
+    alias svn_addid='svn propset svn:keywords "Id"'
+    alias svn_x_bit='svn propset svn:executable ON'
+    alias sysmon02='ssh nms-sysmon02-atl-ga'
+    alias omnibus='ssh netcool-omnibus01-atl-ga'
 
+    export CVSROOT=':ext:kledford@cvs.us.tandbergtv.com:/usr/local/cvsroot'
+    export CVS_RSH='/usr/bin/ssh'
+    export PRINTER=Laserjet
+    export ADHOST=atl-dc1
+    export ADUSER=kledford
+
+    PROMPT="$PR_LIGHT_BLUE%n$PR_LIGHT_RED@$PR_LIGHT_BLUE%m$PR_LIGHT_CYAN %2~ \$(check_svn_changes)\$(parse_svn_repos)\$(check_git_changes)\$(parse_git_branch)$PR_CYAN  $PR_LIGHT_WHITE 
+$PR_NO_COLOR$ "
+    RPS1="$PR_LIGHT_YELLOW(%D{%m-%d %H:%M})$PR_NO_COLOR"
+
+else
+    PROMPT="$PR_LIGHT_BLUE%n$PR_LIGHT_RED@$PR_LIGHT_MAGENTA%m$PR_LIGHT_CYAN %2~ \$(check_svn_changes)\$(parse_svn_repos)\$(check_git_changes)\$(parse_git_branch)$PR_CYAN  $PR_LIGHT_WHITE 
+$PR_NO_COLOR$ "
+    RPS1="$PR_LIGHT_YELLOW(%D{%m-%d %H:%M})$PR_NO_COLOR"
+fi
+
+# Keychain initialization
+if [ -f "${KEYCHAIN}" ]; then
+    for key in ${SSH_KEYS}; do
+        if [ -f "${key}" ]; then
+            ${KEYCHAIN} --nogui -q $key
+            source ${HOME}/.keychain/${HOST}-sh > /dev/null
+        fi
+    done
+fi
+
+if [ -f ${ZSH_HOSTS} ]; then
+    hosts=($hosts `cat ${ZSH_HOSTS} | xargs`)
+fi
+
+# Hosts to use for completion - use hosts from both /etc/hosts and DNS
+hosts=(`grep '^[0-9]' /etc/hosts | awk '{print $2}' | xargs` `grep "^Host" ~/.ssh/config |cut -f 2 -d" " |grep -v "*"|xargs` ${${${(f)"$(<$HOME/.ssh/known_hosts)"}%%\ *}%%,*})
+zstyle ':completion:*:hosts' hosts $hosts 
 
