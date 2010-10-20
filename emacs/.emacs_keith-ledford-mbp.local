@@ -1,0 +1,62 @@
+;; -*- lisp -*-
+(setq html-helper-address-string "<a href=\"mailto:keith@ledfords.us\">Keith Ledford &lt;keith@ledfords.us&gt;</a>")
+(message "SETTING EMAIL ADDRESSES FOR MBP")
+
+(message "SETTING EMAIL ADDRESSES FOR MBP2")
+;; for compatibility with older Aquamacs versions
+					;  (defvar aquamacs-140-custom-file-upgraded t)
+(unless (fboundp 'auto-detect-longlines) (defun auto-detect-longlines () t))
+(message "SETTING EMAIL ADDRESSES FOR MBP3")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(all-christian-calendar-holidays t t)
+ '(user-mail-address "keith@ledfords.us")
+					;   '(html-helper-address-string "<a href=\"mailto:keith@ledfords.us\">Keith Ledford &lt;keith@ledfords.us&gt;</a>")
+ '(post-email-address "keith@ledfords.us")
+ '(aquamacs-additional-fontsets nil t)
+ '(aquamacs-customization-version-id 208 t)
+ '(aquamacs-tool-bar-user-customization nil t)
+ '(c-comment-prefix-regexp (quote ((java-mode . "") (other . ""))))
+ '(case-fold-search t)
+   '(cperl-close-paren-offset -4)
+   '(cperl-continued-statement-offset 4)
+   '(cperl-indent-level 4)
+   '(cperl-tab-always-indent t)
+   '(current-language-environment "English")
+   '(default-frame-alist (quote ((tool-bar-lines . 1) (menu-bar-lines . 1) (cursor-type . box) (vertical-scroll-bars . right) (internal-border-width . 0) (left-fringe . 1) (right-fringe) (fringe) (background-color . "black") (background-mode . dark) (border-color . "black") (cursor-color . "yellow") (foreground-color . "white") (mouse-color . "sienna1"))))
+   '(develock-auto-enable nil)
+   '(display-time-mode t)
+   '(font-lock-global-modes t)
+   '(font-lock-maximum-size 71680)
+   '(font-lock-mode-hook (quote (ignore)) t)
+   '(hi-lock-mode t t (hi-lock))
+   '(mouse-sel-mode t nil (mouse-sel))
+   '(ns-tool-bar-display-mode (quote both) t)
+   '(ns-tool-bar-size-mode (quote regular) t)
+   '(nxml-auto-insert-xml-declaration-flag t)
+   '(nxml-bind-meta-tab-to-complete-flag t)
+   '(nxml-slash-auto-complete-flag t)
+   '(post-email-address "keith@ledfords.us")
+   '(query-user-mail-address nil)
+   '(show-trailing-whitespace t)
+   '(size-indication-mode t)
+   '(toolbar-menu-show--aquamacs-print t)
+   '(user-mail-address "keith@ledford.us")
+   '(visual-line-mode nil t)
+   '(x-select-enable-clipboard t)
+     )
+  (message "setting email addresses for MBP4")
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+					;'(default ((t (:size "14pt" :family "Charter"))))
+   '(autoface-default ((t (:inherit default :background "#010101" :foreground "#ffffff"))) t)
+   '(ruby-mode-default ((t (:inherit autoface-default :background "#010101" :foreground "#ffffff"))) t)
+   '(trailing-whitespace ((((class color) (background dark)) (:foreground "red" :underline unspecified))))
+   )
+  (message "setting email addresses for MBP5")
