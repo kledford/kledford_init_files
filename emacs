@@ -63,13 +63,14 @@
 ;; END Taken from http://sigquit.wordpress.com/2008/09/28/single-dot-emacs-file/
 ;Keith-Ledfords-MBP.local
 ;darwin
-(if (string-equal system-name "Keith-Ledfords-MBP.local")
-    (message "SYSTEM NAME MATCH")
-)
+;; (if (string-equal system-name "Keith-Ledfords-MBP.local")
+;;     (message "SYSTEM NAME MATCH")
+;; )
 
 ;; System Specific Settings
 (if  (system-type-is-darwin)
-    (load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs_darwin")
+    (load "~/.emacs_darwin")
+;    (load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs_darwin")
 )
 
 
@@ -82,7 +83,8 @@
 
 ;;(if (system-is-my-mac)
 (if (string-equal system-name "Keith-Ledfords-MBP.local")
-    (load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs-keith-ledfords-mbp.local")
+    (load "~/.emacs-keith-ledfords-mbp.local")
+;    (load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs-keith-ledfords-mbp.local")
     ;;(load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs_keith-ledfords-mbp.local")
   )
 
@@ -123,7 +125,7 @@
   ;; Your init file should contain only one such instance.
  '(default ((t (:size "14pt" :family "Charter"))))
  '(trailing-whitespace ((((class color) (background dark)) (:foreground "red" :underline unspecified)))))
-(add-to-list 'load-path "~/emacs/")
+(add-to-list 'load-path "~/.emacs_modes/")
 (require 'color-theme)
 (color-theme-dark-laptop)
 
@@ -158,18 +160,18 @@
 ;; http://www.emacswiki.org/cgi-bin/wiki/RecentFiles
 (recentf-mode 1)
 
-;; FOR crypt++.el
-(setq crypt-encryption-type 'gpg
-      crypt-encryption-file-extension "\\(\\.gpg\\)$"
-      crypt-bind-insert-file nil
-      crypt-freeze-vs-fortran nil)
-(define-key global-map "\C-c\C-e" 'crypt-encrypted-mode)
-(modify-coding-system-alist 'file "\\.bz\\'" 'no-conversion)
-(modify-coding-system-alist 'file "\\.bz2\\'" 'no-conversion)
-(modify-coding-system-alist 'file "\\.gpg\\'" 'no-conversion)
-(modify-coding-system-alist 'file "\\.gz\\'" 'no-conversion)
-(modify-coding-system-alist 'file "\\.Z\\'" 'no-conversion)
-;; END FOR crypt++.el
+;; ;; FOR crypt++.el
+;; (setq crypt-encryption-type 'gpg
+;;       crypt-encryption-file-extension "\\(\\.gpg\\)$"
+;;       crypt-bind-insert-file nil
+;;       crypt-freeze-vs-fortran nil)
+;; (define-key global-map "\C-c\C-e" 'crypt-encrypted-mode)
+;; (modify-coding-system-alist 'file "\\.bz\\'" 'no-conversion)
+;; (modify-coding-system-alist 'file "\\.bz2\\'" 'no-conversion)
+;; (modify-coding-system-alist 'file "\\.gpg\\'" 'no-conversion)
+;; (modify-coding-system-alist 'file "\\.gz\\'" 'no-conversion)
+;; (modify-coding-system-alist 'file "\\.Z\\'" 'no-conversion)
+;; ;; END FOR crypt++.el
 
 ;; use Unix-style line endings
 (setq-default inhibit-eol-conversion t)
@@ -184,15 +186,15 @@
 
 (setq tramp-default-method "scp")
 
-(autoload 'fetchmail-mode "fetchmail-mode.el" "Mode for editing .fetchmailrc files" t)
-(autoload 'dns-mode "dns-mode.el" "Mode for editing dns files" t)
-(add-to-list 'auto-mode-alist '("\\.dns?\\'" . dns-mode))
-(autoload 'netsaint-mode "netsaint-mode.el" "Mode for editing netsaint cfg files" t)
-(add-hook 'netsaint-mode-hook 'turn-on-font-lock)
-(autoload 'php-mode "php-mode.el" "mode for editing php files" t)
-(add-to-list 'auto-mode-alist '("\\.php?\\'" . php-mode)) 
-(autoload 'post-mode "/home/kledford/emacs/post" "Mode for editing mail/news messages" t)
-(add-to-list 'auto-mode-alist '("\\mutt.*\\'" . post-mode)) 
+;; (autoload 'fetchmail-mode "fetchmail-mode.el" "Mode for editing .fetchmailrc files" t)
+;; (autoload 'dns-mode "dns-mode.el" "Mode for editing dns files" t)
+;; (add-to-list 'auto-mode-alist '("\\.dns?\\'" . dns-mode))
+;; (autoload 'netsaint-mode "netsaint-mode.el" "Mode for editing netsaint cfg files" t)
+;; (add-hook 'netsaint-mode-hook 'turn-on-font-lock)
+;; (autoload 'php-mode "php-mode.el" "mode for editing php files" t)
+;; (add-to-list 'auto-mode-alist '("\\.php?\\'" . php-mode)) 
+;; (autoload 'post-mode "/home/kledford/emacs/post" "Mode for editing mail/news messages" t)
+;; (add-to-list 'auto-mode-alist '("\\mutt.*\\'" . post-mode)) 
 
 
 ;; Enable html mode for .tpl files (nsite)
@@ -210,11 +212,11 @@
 (add-to-list 'auto-mode-alist
 	     '("\\.cgi$" . cperl-mode))
 
-(autoload 'muttrc-mode "muttrc-mode.el"
-  "Major mode to edit muttrc files" t)
-(setq auto-mode-alist
-      (append '(("muttrc\\'" . muttrc-mode))
-	      auto-mode-alist))
+;; (autoload 'muttrc-mode "muttrc-mode.el"
+;;   "Major mode to edit muttrc files" t)
+;; (setq auto-mode-alist
+;;       (append '(("muttrc\\'" . muttrc-mode))
+;; 	      auto-mode-alist))
 
 ;;; Convert DOS file format to Unix
 
@@ -492,23 +494,23 @@ With positive ARG set it, with nonpositive ARG reset it."
 
 (put 'upcase-region 'disabled nil)
 
-(defun procmail-mode ()
-  "Mode for highlighting procmailrc files"
-  (interactive)
-  (setq mode-name "Procmail"
-	major-mode 'procmail))
+;; (defun procmail-mode ()
+;;   "Mode for highlighting procmailrc files"
+;;   (interactive)
+;;   (setq mode-name "Procmail"
+;; 	major-mode 'procmail))
 
-(setq procmail-font-lock-keywords
-      (list '("#.*"
-	      . font-lock-comment-face)
-	    '("^[\t ]*:.*"
-	      . font-lock-type-face)
-	    '("[A-Za-z_]+=.*"
-	      . font-lock-keyword-face)
-	    '("^[\t ]*\\*.*"
-	      . font-lock-doc-string-face)
-	    '("\$[A-Za-z0-9_]+"
-	      . font-lock-function-name-face)))
+;; (setq procmail-font-lock-keywords
+;;       (list '("#.*"
+;; 	      . font-lock-comment-face)
+;; 	    '("^[\t ]*:.*"
+;; 	      . font-lock-type-face)
+;; 	    '("[A-Za-z_]+=.*"
+;; 	      . font-lock-keyword-face)
+;; 	    '("^[\t ]*\\*.*"
+;; 	      . font-lock-doc-string-face)
+;; 	    '("\$[A-Za-z0-9_]+"
+;; 	      . font-lock-function-name-face)))
 
 ;; Enable dot-mode
 (autoload 'dot-mode "dot-mode" nil t) ; vi `.' command emulation
@@ -592,6 +594,9 @@ With positive ARG set it, with nonpositive ARG reset it."
             (require 'ruby-electric)
             (ruby-electric-mode t)
             ))
+(require 'ruby-block)
+(ruby-block-mode t)
+(setq ruby-block-highlight-toggle t)
 
 (define-auto-insert "\\.rb$" 'ruby-auto-insert)
 (defun ruby-auto-insert ()
