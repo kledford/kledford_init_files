@@ -75,15 +75,16 @@
 
 
 (if (system-is-my-work-desktop)
-    (message "SETTING EMAIL ADDRESSES FOR MY WORK DESKTOP")
-    (setq user-mail-address "keith.ledford@ericsson.com")
-    (setq html-helper-address-string "<a href=\"mailto:keith.ledford@ericsson.com\">Keith Ledford &lt;keith.ledford@ericsson.com&gt;</a>")
-    (setq  post-email-address "keith.ledford@ericsson.com")
+    (load "~/.emacs_work-desktop")
+;;    (message "SETTING EMAIL ADDRESSES FOR MY WORK DESKTOP")
+    ;; (setq user-mail-address "keith.ledford@ericsson.com")
+    ;; (setq html-helper-address-string "<a href=\"mailto:keith.ledford@ericsson.com\">Keith Ledford &lt;keith.ledford@ericsson.com&gt;</a>")
+    ;; (setq  post-email-address "keith.ledford@ericsson.com")
 )
 
 ;;(if (system-is-my-mac)
 (if (string-equal system-name "Keith-Ledfords-MBP.local")
-    (load "~/.emacs-keith-ledfords-mbp.local")
+    (load "~/.emacs_keith-ledfords-mbp-local")
 ;    (load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs-keith-ledfords-mbp.local")
     ;;(load "/Users/kledford/src/git/github/mysrc/programming_docs/emacs/.emacs_keith-ledfords-mbp.local")
   )
