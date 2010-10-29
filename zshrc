@@ -284,7 +284,7 @@ if [ ${HOST} = 'Keith-Ledfords-MBP.local' ]; then
     alias aquamacs='~/bin/edit'
     alias diff='/usr/bin/diff -pubBbd'
     export ZSH_HOSTS=${HOME}/.zsh/hosts
-    export PATH=/opt/local/bin:${PATH}
+    export PATH=/opt/local/bin:${PATH}:/Library/PostgreSQL/9.0/bin
     PROMPT="$PR_LIGHT_BLUE%n$PR_LIGHT_RED@$PR_LIGHT_BLUE%m$PR_LIGHT_CYAN %2~ \$(check_svn_changes)\$(parse_svn_repos)\$(check_git_changes)\$(parse_git_branch)$PR_CYAN  $PR_LIGHT_WHITE 
 $PR_NO_COLOR$ "
     RPS1="$PR_LIGHT_YELLOW(%D{%m-%d %H:%M})$PR_NO_COLOR"
