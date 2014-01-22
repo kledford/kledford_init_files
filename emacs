@@ -74,6 +74,9 @@
 )
 
 
+
+
+
 (if (system-is-my-work-desktop)
     (load "~/.emacs_work-desktop")
 ;;    (message "SETTING EMAIL ADDRESSES FOR MY WORK DESKTOP")
@@ -632,3 +635,8 @@ With positive ARG set it, with nonpositive ARG reset it."
 ;; (simplenote-setup)
 
 
+(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t) (setq auto-mode-alist (cons '("\\.text" . markdown-mode) auto-mode-alist))
+
+(autoload 'puppet-mode "puppet-mode" "Major mode for editing puppet manifests")
+
+(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
